@@ -14,14 +14,8 @@ const Item = sequelize.define('item', {
     article: {type: DataTypes.STRING, allowNull: false, unique: true},
     price: {type: DataTypes.INTEGER},
     categoryId: {type: DataTypes.INTEGER},
-    mainImgPath: {type: DataTypes.STRING}
+    gallery: {type: DataTypes.JSON}
 });
-
-const Gallery = sequelize.define('gallery', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    path: {type: DataTypes.STRING},
-    itemId: {type: DataTypes.INTEGER}
-})
 
 const Category = sequelize.define('category', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -30,15 +24,11 @@ const Category = sequelize.define('category', {
     imgPath: {type: DataTypes.STRING}
 });
 
-Item.hasMany(Gallery);
-Gallery.belongsTo(Item);
-
 Category.hasMany(Item);
 Item.belongsTo(Category);
 
 module.exports = {
     User,
     Item,
-    Gallery,
     Category
 };

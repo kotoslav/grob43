@@ -3,12 +3,13 @@ const ApiError = require('../error/ApiError');
 
 class ItemController {
     async createOne(req, res) {
-        const {name, description, article, price, categoryId, mainImgPath} = req.body;
-        const item = await Item.create({name, description, article, price, categoryId, mainImgPath});
+        const {name, description, article, price, categoryId, gallery} = req.body;
+        const item = await Item.create({name, description, article, price, categoryId, gallery});
         return res.json(item);
     }
 
     async readOne(req, res) {
+        console.log('here');
         const item = await Item.findByPk(req.params['id']);
         return res.json(item);
     }
@@ -23,9 +24,9 @@ class ItemController {
     }
 
     async updateOne(req, res) {
-        const {name, description, article, price, categoryId, mainImgPath} = req.body;
+        const {name, description, article, price, categoryId, gallery} = req.body;
         const item = await Item.update(
-            {name, description, article, price, categoryId, mainImgPath},
+           {name, description, article, price, categoryId, gallery} ,
             {
                where: {
                 id: req.params['id']

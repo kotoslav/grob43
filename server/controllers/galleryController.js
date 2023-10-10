@@ -1,47 +1,27 @@
 const {Gallery} = require('../models/models');
 const ApiError = require('../error/ApiError');
 const uuid = require('uuid');
+const path = require('path');
+const fs = require("fs");
 
 class GalleryController {
     async createOne(req, res) {
-        const {path, itemId} = req.body;
-        const {imgs} = req.files;
-
-        const gallery = await Gallery.create({path, itemId});
-        return res.json(gallery);
-    }
-
-    async readOne(req, res) {
-        const gallery = await Gallery.findByPk(req.params['photoId']);
-        return res.json(gallery);
-    }
-
-    async readAllByItem(req, res) {
-        const gallery = await Gallery.findAll({
-            where: {
-                itemId: req.params['itemId']
-            }
-        });
-        return res.json(gallery);
+        const img = req.files.img;
+        let fileName = uuid.v4() + '.' + img.name.match(/\.([^.]+)$/)?.[1];
+        img.mv(path.resolve(__dirname, '..', 'upload', fileName));
+        return res.json({imgPath: `/upload/${fileName}`});
     }
 
     async deleteOne(req, res) {
-        const gallery = await Item.destroy({
-            where: {
-                id: req.params['photoId']
-            }
-        });
-        return res.json(gallery);
+        let fileName = req.body.path.split("/").pop();
+        try {
+            fs.unlinkSync(path.resolve(__dirname, '..', 'upload', fileName));
+        } catch (e) {
+            return res.json({error: "Нет такого файла"});
+        }
+        return res.json({imgPath: `/upload/${fileName}`});
     }
 
-    async deleteAllByItem(req, res) {
-        const gallery = await Item.destroy({
-            where: {
-                itemId: req.params['itemId']
-            }
-        });
-        return res.json(gallery);
-    }
 }
 
 module.exports = new GalleryController();
