@@ -7,6 +7,7 @@ const fileUpload = require('express-fileupload');
 const router = require('./routes/index');
 const errorHandler = require('./middleware/ErrorHandlingMiddleware');
 const path = require('path');
+const {User} = require('./models/models');
 
 const PORT = process.env.PORT ?? 5000;
 
@@ -23,6 +24,16 @@ const start = async () => {
     try {
         await sequelize.authenticate();
         await sequelize.sync();
+
+
+        if ( !(await User.findOne({
+            where: {
+                login: "admin"
+            }
+        }))) {
+            await User.create({login: "admin", password:  process.env.AP_PASSWORD});
+        }
+
         app.listen(PORT, () => console.log(`Server started on port: ${PORT}`));
 
     } catch (e) {

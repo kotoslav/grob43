@@ -4,7 +4,7 @@ const itemController = require('../controllers/itemController');
 
 router.post('/', itemController.createOne);
 router.get('/:id', itemController.readOne);
-router.get('/category/:categoryId/:page', itemController.readAllByCategory);
+router.get('/category', itemController.readAllByCategory);
 router.patch('/:id', itemController.updateOne);
 router.delete('/:id', itemController.deleteOne);
 

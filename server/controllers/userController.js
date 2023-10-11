@@ -3,6 +3,7 @@ const ApiError = require('../error/ApiError');
 
 class UserController {
     async login(req, res) {
+        const {login, password} = req.body;
 
     }
 

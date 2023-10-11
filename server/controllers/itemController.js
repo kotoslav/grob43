@@ -15,6 +15,9 @@ class ItemController {
     }
 
     async readAllByCategory(req, res) {
+        let {page, categoryId} = req.query;
+        page = page ?? 1;
+        const limit = process.env.PAGE_LIMIT;
         const item = await Item.findAll({
             where: {
                 categoryId: req.params['categoryId']
