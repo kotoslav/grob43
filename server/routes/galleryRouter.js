@@ -1,8 +1,9 @@
 const Router = require('express');
 const router = new Router();
 const galleryController = require('../controllers/galleryController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-router.post('/', galleryController.createOne);
-router.delete('/', galleryController.deleteOne);
+router.post('/', authMiddleware, galleryController.createOne);
+router.delete('/', authMiddleware, galleryController.deleteOne);
 
 module.exports = router;
