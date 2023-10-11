@@ -6,10 +6,14 @@ const fs = require("fs");
 
 class GalleryController {
     async createOne(req, res) {
-        const img = req.files.img;
-        let fileName = uuid.v4() + '.' + img.name.match(/\.([^.]+)$/)?.[1];
-        img.mv(path.resolve(__dirname, '..', 'upload', fileName));
-        return res.json({imgPath: `/upload/${fileName}`});
+        try {
+            const img = req.files.img;
+            let fileName = uuid.v4() + '.' + img.name.match(/\.([^.]+)$/)?.[1];
+            img.mv(path.resolve(__dirname, '..', 'upload', fileName));
+            return res.json({imgPath: `/upload/${fileName}`});
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
     }
 
     async deleteOne(req, res) {

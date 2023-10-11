@@ -8,6 +8,7 @@ const router = require('./routes/index');
 const errorHandler = require('./middleware/ErrorHandlingMiddleware');
 const path = require('path');
 const {User} = require('./models/models');
+const bcrypt = require('bcrypt');
 
 const PORT = process.env.PORT ?? 5000;
 
@@ -31,7 +32,8 @@ const start = async () => {
                 login: "admin"
             }
         }))) {
-            await User.create({login: "admin", password:  process.env.AP_PASSWORD});
+            let password = await bcrypt(process.env.AP_PASSWORD, 5);
+            await User.create({login: "admin", password });
         }
 
         app.listen(PORT, () => console.log(`Server started on port: ${PORT}`));
