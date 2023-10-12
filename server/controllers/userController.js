@@ -37,17 +37,21 @@ class UserController {
         if (!user) {
             return next(ApiError.internal("Нет такого пользователя"));
         };
-
+        try {
         let comparePassword = bcrypt.compareSync(oldPassword, user.password);
         if (!comparePassword) {
             return next(ApiError.internal('Указан неверный пароль'));
         }
-        password = await bcrypt(password, 5);
+        password = await bcrypt.hash(password, 5);
         user = await User.update({login, password}, {where: {login: login}});
         if (!user) {
             return next(ApiError.internal("Не удалось завершить операцию"));
         };
         return res.json({status: "Пароль успешно изменен!"});
+        } catch (e) {
+            console.log(e);
+            return next(ApiError.internal("Все поля обязательны к заполнению"));
+        }
     }
 }
 

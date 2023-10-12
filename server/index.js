@@ -32,7 +32,7 @@ const start = async () => {
                 login: "admin"
             }
         }))) {
-            let password = await bcrypt(process.env.AP_PASSWORD, 5);
+            let password = await bcrypt.hash(process.env.AP_PASSWORD, 5);
             await User.create({login: "admin", password });
         }
 
