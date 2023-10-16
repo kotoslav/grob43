@@ -12,14 +12,21 @@ class ItemController {
         }
     }
 
-    async readOne(req, res) {
-        console.log('here');
+    async readOne(req, res, next) {
+        try {
+        if (typeof req.params['id'] !== "number") {
+            next(ApiError.notFound("Не найдено"))
+        }
         const item = await Item.findByPk(req.params['id']);
         return res.json(item);
+        } catch (e) {
+            next(ApiError.badRequest("Проверьте тело запроса"))
+        }
     }
 
     async readAllByCategory(req, res) {
         let {page, categoryId} = req.query;
+        categoryId = categoryId ?? 1;
         page = page ?? 1;
         const limit = process.env.PAGE_LIMIT ?? 10;
         let offset = page * limit - limit;

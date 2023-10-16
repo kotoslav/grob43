@@ -9,8 +9,8 @@ export default class ItemStore {
 				"description": "",
 				"article": "321Ж",
 				"price": 320,
-				"categoryId": 3,
-				"mainImgPath": "img/krest1.png",
+				"categoryId": 1,
+				"gallery": ["/upload/6ed84a00-e5e9-4a90-aff5-9bcd26984c2c.png", "/upload/6ed84a00-e5e9-4a90-aff5-9bcd26984c2c.png"],
 				"createdAt": "2023-10-08T10:35:05.767Z",
 				"updatedAt": "2023-10-08T10:35:05.767Z"
 			},
@@ -21,7 +21,7 @@ export default class ItemStore {
 				"article": "321Ж",
 				"price": 320,
 				"categoryId": 3,
-				"mainImgPath": "img/krest1.png",
+				"gallery": ["/upload/6ed84a00-e5e9-4a90-aff5-9bcd26984c2c.png", "/upload/6ed84a00-e5e9-4a90-aff5-9bcd26984c2c.png"],
 				"createdAt": "2023-10-08T10:35:09.839Z",
 				"updatedAt": "2023-10-08T10:35:09.839Z"
 			},
@@ -32,17 +32,40 @@ export default class ItemStore {
 				"article": "321Ж1",
 				"price": 320,
 				"categoryId": 3,
-				"mainImgPath": "img/krest1.png",
+				"gallery": ["/upload/6ed84a00-e5e9-4a90-aff5-9bcd26984c2c.png", "/upload/6ed84a00-e5e9-4a90-aff5-9bcd26984c2c.png"],
+				"createdAt": "2023-10-08T10:34:18.922Z",
+				"updatedAt": "2023-10-08T10:42:21.651Z"
+			},
+			{
+				"id": 3,
+				"name": "Крест очень большой",
+				"description": "",
+				"article": "321Ж1",
+				"price": 320,
+				"categoryId": 3,
+				"gallery": ["/upload/6ed84a00-e5e9-4a90-aff5-9bcd26984c2c.png", "/upload/6ed84a00-e5e9-4a90-aff5-9bcd26984c2c.png"],
+				"createdAt": "2023-10-08T10:34:18.922Z",
+				"updatedAt": "2023-10-08T10:42:21.651Z"
+			},
+			{
+				"id": 3,
+				"name": "Крест очень большой",
+				"description": "",
+				"article": "321Ж1",
+				"price": 320,
+				"categoryId": 3,
+				"gallery": ["/upload/6ed84a00-e5e9-4a90-aff5-9bcd26984c2c.png", "/upload/6ed84a00-e5e9-4a90-aff5-9bcd26984c2c.png"],
 				"createdAt": "2023-10-08T10:34:18.922Z",
 				"updatedAt": "2023-10-08T10:42:21.651Z"
 			}
+
 		];
 		this._categories = [
 			{
 				"id": 1,
 				"title": "Кресты",
 				"description": "",
-				"imgPath": "",
+				"imgPath": "/upload/6ed84a00-e5e9-4a90-aff5-9bcd26984c2c.png",
 				"createdAt": "2023-10-08T09:41:13.869Z",
 				"updatedAt": "2023-10-08T09:41:13.869Z"
 			},
