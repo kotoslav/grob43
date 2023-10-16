@@ -1,7 +1,10 @@
 import React from 'react';
 import { Button, Card, Container, Form } from 'react-bootstrap';
+import { ADMIN_ROUTE } from '../utils/consts';
+import {useHistory} from 'react-router-dom'
 
 const Auth = () => {
+    const history = useHistory()
 
     return (
        <Container
@@ -20,7 +23,11 @@ const Auth = () => {
                     placeholder='Введите пароль'
                     type='password'
                 />
-                <Button variant={"outline-success"} className='mt-2'>
+                <Button
+                variant={"outline-success"}
+                className='mt-2'
+                onClick={() => history.push(ADMIN_ROUTE)}
+                >
                     Войти
                 </Button>
             </Form>

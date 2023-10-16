@@ -79,6 +79,7 @@ export default class ItemStore {
 			}
 		];
 		this._selectedCategory = {}
+		this._selectedItem = {}
 		makeAutoObservable(this);
 	}
 
