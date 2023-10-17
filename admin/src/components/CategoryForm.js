@@ -40,9 +40,6 @@ class CategoryForm extends React.Component {
     }
   }
 
-  async sendFiles(files) {
-
-  }
 
   render() {
     return (
@@ -57,7 +54,7 @@ class CategoryForm extends React.Component {
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2">Описание</Form.Label>
           <Col sm="10">
-            <Form.Control value={this.state.description} onChange={(e) => this.setState({description: e.target.value})} placeholder="Описание"/>
+            <Form.Control as="textarea" rows={3} value={this.state.description} onChange={(e) => this.setState({description: e.target.value})} placeholder="Описание"/>
           </Col>
         </Form.Group>
 

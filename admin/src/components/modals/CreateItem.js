@@ -1,11 +1,12 @@
-import React from 'react';
+import {React, useContext} from 'react';
 import { Form, ModalDialog, Modal, Button } from 'react-bootstrap';
 import ItemForm from "../ItemForm";
+import { Context } from '../../index';
 
 const CreateItem = ( {show, onHide, modalItem, setModalItem} ) => {
-    let item = JSON.parse(JSON.stringify(modalItem));
-    let newItem = (item.name === undefined);
-
+    const { item } = useContext(Context);
+    let itemM = JSON.parse(JSON.stringify(modalItem));
+    let newItem = (itemM.name === undefined);
     return (
     <Modal
       show={show}
@@ -20,7 +21,7 @@ const CreateItem = ( {show, onHide, modalItem, setModalItem} ) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      <ItemForm state={modalItem} />
+      <ItemForm state={modalItem} category={{selectedCategory: item.selectedCategory, categories: item.categories }} />
       </Modal.Body>
       <Modal.Footer>
         <Button variant={'outline-success'} onClick={onHide}>Сохранить</Button>
