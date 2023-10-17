@@ -2,23 +2,23 @@ import React from "react";
 import { Form, Row, Col, Button, CloseButton, Card } from "react-bootstrap";
 import axios from "axios";
 
-class CategoryForm extends React.Component {
+class ItemForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = props.state;
-    this.setModalCategory = props.setModalCategory;
-    this.state.gallery = this.state.imgPath ? [this.state.imgPath] : [];
+    this.setModalItem= props.setModalItem;
+    this.state.galleryDrop = this.state.gallery ? [...this.state.gallery] : [];
     this.state.drag = false;
   }
 
   galleryPush(imgPath) {
-    let gallery = [...this.state.gallery, imgPath]
-    this.setState({gallery: gallery});
+    let gallery = [...this.state.galleryDrop, imgPath]
+    this.setState({galleryDrop: gallery});
   }
 
   galleryDelete(imgPath) {
-    let gallery = [...this.state.gallery].filter( (img) => img !== imgPath);
-    this.setState({gallery: gallery});
+    let gallery = [...this.state.galleryDrop].filter( (img) => img !== imgPath);
+    this.setState({galleryDrop: gallery});
   }
 
   onDropHandler(e) {
@@ -48,9 +48,9 @@ class CategoryForm extends React.Component {
     return (
       <Form>
         <Form.Group as={Row} className="mb-3">
-          <Form.Label column sm="2">Заголовок</Form.Label>
+          <Form.Label column sm="2">Наименование</Form.Label>
           <Col sm="10">
-            <Form.Control value={this.state.title} onChange={(e) => this.setState({title: e.target.value})} placeholder="Заголовок"/>
+            <Form.Control value={this.state.name} onChange={(e) => this.setState({name: e.target.value})} placeholder="Наименование"/>
           </Col>
         </Form.Group>
 
@@ -61,10 +61,32 @@ class CategoryForm extends React.Component {
           </Col>
         </Form.Group>
 
+
         <Form.Group as={Row} className="mb-3">
-          <Form.Label column sm="2">imgPath</Form.Label>
+          <Form.Label column sm="2">Артикул</Form.Label>
           <Col sm="10">
-            <Form.Control value={this.state.imgPath} onChange={(e) => this.setState({imgPath: e.target.value})} placeholder="imgPath"/>
+            <Form.Control value={this.state.article} onChange={(e) => this.setState({article: e.target.value})} placeholder="Артикул"/>
+          </Col>
+        </Form.Group>
+
+          <Form.Group as={Row} className="mb-3">
+          <Form.Label column sm="2">Стоимость</Form.Label>
+          <Col sm="10">
+            <Form.Control value={this.state.price} onChange={(e) => this.setState({price: e.target.value})} placeholder="Стоимость"/>
+          </Col>
+        </Form.Group>
+
+          <Form.Group as={Row} className="mb-3">
+          <Form.Label column sm="2">Категория</Form.Label>
+          <Col sm="10">
+            <Form.Control value={this.state.categoryId} onChange={(e) => this.setState({categoryId: e.target.value})} placeholder="Категория"/>
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} className="mb-3">
+          <Form.Label column sm="2">Галерея</Form.Label>
+          <Col sm="10">
+            <Form.Control value={this.state.gallery} onChange={(e) => this.setState({gallery: e.target.value})} placeholder="Галерея"/>
           </Col>
 
 
@@ -90,7 +112,7 @@ class CategoryForm extends React.Component {
 
 
           <Card style={{width: "100%"}} className={'m-2 d-flex flex-row'}>
-                    {this.state.gallery.length > 0 ? this.state.gallery.map((img) =>
+                    {this.state.galleryDrop.length > 0 ? this.state.galleryDrop.map((img) =>
                       <Card key={img} style={{width: "100px", height: "100px", position: "relative"}}>
                        <CloseButton style={{position: 'absolute', top: 5, right: 10, fontSize: 32 }} className={'text-danger'}
                        onClick={
@@ -110,4 +132,4 @@ class CategoryForm extends React.Component {
   }
 }
 
-export default CategoryForm
+export default ItemForm

@@ -26,7 +26,7 @@ export default class ItemStore {
 				"updatedAt": "2023-10-08T10:35:09.839Z"
 			},
 			{
-				"id": 3,
+				"id": 6,
 				"name": "Крест очень большой",
 				"description": "",
 				"article": "321Ж1",
@@ -37,7 +37,7 @@ export default class ItemStore {
 				"updatedAt": "2023-10-08T10:42:21.651Z"
 			},
 			{
-				"id": 3,
+				"id": 7,
 				"name": "Крест очень большой",
 				"description": "",
 				"article": "321Ж1",
@@ -48,7 +48,7 @@ export default class ItemStore {
 				"updatedAt": "2023-10-08T10:42:21.651Z"
 			},
 			{
-				"id": 3,
+				"id": 8,
 				"name": "Крест очень большой",
 				"description": "",
 				"article": "321Ж1",

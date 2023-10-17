@@ -1,8 +1,10 @@
 import React from 'react';
 import { Form, ModalDialog, Modal, Button } from 'react-bootstrap';
+import ItemForm from "../ItemForm";
 
-const CreateItem = ( {show, onHide, item} ) => {
-    let newItem = (item === undefined);
+const CreateItem = ( {show, onHide, modalItem, setModalItem} ) => {
+    let item = JSON.parse(JSON.stringify(modalItem));
+    let newItem = (item.name === undefined);
 
     return (
     <Modal
@@ -18,9 +20,7 @@ const CreateItem = ( {show, onHide, item} ) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      <Form>
-        <Form.Control />
-      </Form>
+      <ItemForm state={modalItem} />
       </Modal.Body>
       <Modal.Footer>
         <Button variant={'outline-success'} onClick={onHide}>Сохранить</Button>

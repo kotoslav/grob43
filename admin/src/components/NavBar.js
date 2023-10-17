@@ -9,7 +9,7 @@ const NavBar = () => {
     return (
       <Navbar bg="dark" data-bs-theme="dark" variant="dark">
         <Container>
-          <NavLink class="badge badge-dark" to={LOGIN_ROUTE}>GROB43</NavLink>
+          <NavLink className={"badge badge-dark"} to={LOGIN_ROUTE}>GROB43</NavLink>
           <Nav className="ml-auto">
             <Button
             variant='outline-light'

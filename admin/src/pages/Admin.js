@@ -11,6 +11,7 @@ const Admin = () => {
     const [categoryVisible, setCategoryVisible] = useState(false);
     const [itemVisible, setItemVisible] = useState(false);
     const [modalCategory, setModalCategory] = useState({});
+    const [modalItem, setModalItem] = useState({});
     return (
         <div className='bg-secondary' style={{minHeight:"100vh"}}>
             <NavBar />
@@ -24,13 +25,26 @@ const Admin = () => {
                     <Col md={9}>
                     <Button
                     variant={'outline-light'}
-                    onClick={() => setItemVisible(true)}
+                    onClick={() => {
+                        setItemVisible(true);
+                        setModalItem({});
+                    }}
                     >Добавить новый товар</Button>
-                    <ItemList />
+                    <ItemList
+                    modal={{setModalItem, setItemVisible}}
+                    />
                     </Col>
                 </Row>
-                <CreateCategory modalCategory={modalCategory} setModalCategory={setModalCategory} show={categoryVisible} onHide={() => setCategoryVisible(false)} />
-                <CreateItem show={itemVisible} onHide={() => setItemVisible(false)}/>
+                <CreateCategory
+                modalCategory={modalCategory}
+                setModalCategory={setModalCategory}
+                show={categoryVisible}
+                onHide={() => setCategoryVisible(false)} />
+                <CreateItem
+                modalItem={modalItem}
+                setModalItem={ setModalItem}
+                show={itemVisible}
+                onHide={() => setItemVisible(false)}/>
             </Container>
         </div>
     );
