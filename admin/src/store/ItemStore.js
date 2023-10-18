@@ -6,11 +6,11 @@ export default class ItemStore {
 			{
 				"id": 4,
 				"name": "Крест11",
-				"description": "",
+				"description": "описание такое\nи дальше так",
 				"article": "321Ж",
 				"price": 320,
 				"categoryId": 1,
-				"gallery": ["/upload/e46375b6-8723-476e-a73e-38c4a07761f5.jpg", "/upload/97834135-e7dd-4638-81ea-024c6a826daf.jpg"],
+				"gallery": ["/upload/e46375b6-8723-476e-a73e-38c4a07761f5.jpg", "/upload/e46375b6-8723-476e-a73e-38c4a07761f5.jpg"],
 				"createdAt": "2023-10-08T10:35:05.767Z",
 				"updatedAt": "2023-10-08T10:35:05.767Z"
 			},

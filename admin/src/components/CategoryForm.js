@@ -7,12 +7,13 @@ class CategoryForm extends React.Component {
     super(props);
     this.state = props.state;
     this.setModalCategory = props.setModalCategory;
+    this.setForm = props.setForm;
     this.state.gallery = this.state.imgPath ? [this.state.imgPath] : [];
     this.state.drag = false;
   }
 
   galleryPush(imgPath) {
-    let gallery = [...this.state.gallery, imgPath]
+    let gallery = [imgPath]
     this.setState({gallery: gallery});
   }
 
@@ -21,21 +22,29 @@ class CategoryForm extends React.Component {
     this.setState({gallery: gallery});
   }
 
+  passForm() {
+    let form = {
+      title: this.state.title,
+      description: this.state.description,
+      imgPath: this.state.imgPath
+    };
+    this.setForm(form);
+  }
+
+
   onDropHandler(e) {
     e.preventDefault();
     let files = [...e.dataTransfer.files];
     if  (files) {
       console.log(files);
-      files.forEach( (file) => {
         const formData = new FormData();
-        formData.append('img', file);
+        formData.append('img', files[0]);
 
         axios.post( 'http://127.0.0.1:5050/api/gallery/', formData)
         .then( res => {
           this.galleryPush(res.data.imgPath);
         })
 
-      })
 
     }
   }
@@ -43,7 +52,7 @@ class CategoryForm extends React.Component {
 
   render() {
     return (
-      <Form>
+      <Form onKeyUp={() => this.passForm()} onDrop={() => this.passForm()} >
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2">Заголовок</Form.Label>
           <Col sm="10">
@@ -59,10 +68,7 @@ class CategoryForm extends React.Component {
         </Form.Group>
 
         <Form.Group as={Row} className="mb-3">
-          <Form.Label column sm="2">imgPath</Form.Label>
-          <Col sm="10">
-            <Form.Control value={this.state.imgPath} onChange={(e) => this.setState({imgPath: e.target.value})} placeholder="imgPath"/>
-          </Col>
+
 
 
           <Card style={{width: "100%", height: '100px'}} className={'m-2 d-flex align-items-center justify-content-center'}

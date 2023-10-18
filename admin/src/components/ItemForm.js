@@ -12,7 +12,19 @@ class ItemForm extends React.Component {
     this.counter = this.state.galleryDrop.length;
     this.state.drag = false;
     this.category = props.category;
-    this.state.currentIMG = {imgPath: "http://127.0.0.1:5050/upload/e46375b6-8723-476e-a73e-38c4a07761f5.jpg"};
+    this.setForm = props.setForm;
+  }
+
+  passForm() {
+    let form = {
+      name: this.state.name,
+      description: this.state.description,
+      article: this.state.article,
+      price: Number(this.state.price),
+      categoryId: Number(this.state.categoryId),
+      gallery: [...this.state.gallery]
+    };
+    this.setForm(form);
   }
 
   galleryPush(imgPath) {
@@ -21,8 +33,8 @@ class ItemForm extends React.Component {
     this.setState({galleryDrop: gallery});
   }
 
-  galleryDelete(imgPath) {
-    let gallery = [...this.state.galleryDrop].filter( (img) => img.imgPath !== imgPath);
+  galleryDelete(imgOrder) {
+    let gallery = [...this.state.galleryDrop].filter( (img) => img.order !== imgOrder);
     this.setState({galleryDrop: gallery});
   }
 
@@ -45,16 +57,13 @@ class ItemForm extends React.Component {
     console.log('drop', img);
     this.setState({galleryDrop: this.state.galleryDrop.map(
       (imgMap) => {
-        if (img.id !== this.state.currentIMG.id ) {
         if (imgMap.id === img.id) {
           return {...imgMap, order: this.state.currentIMG.order}
         };
         if (imgMap.id === this.state.currentIMG.id) {
           return {...imgMap, order: img.order}
         }
-      } else {
         return imgMap;
-      }
       }
     )})
 
@@ -81,7 +90,7 @@ class ItemForm extends React.Component {
 
   render() {
     return (
-      <Form>
+      <Form onKeyUp={() => this.passForm()} onDrop={() => this.passForm()} onChange={() => this.passForm()}>
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2">Наименование</Form.Label>
           <Col sm="10">
@@ -107,16 +116,29 @@ class ItemForm extends React.Component {
           <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2">Стоимость</Form.Label>
           <Col sm="10">
-            <Form.Control value={this.state.price} onChange={(e) => this.setState({price: e.target.value})} placeholder="Стоимость"/>
+            <Form.Control type="number" value={this.state.price} onChange={(e) => this.setState({price: e.target.value})} placeholder="Стоимость"/>
           </Col>
         </Form.Group>
 
           <Form.Group as={Row} className="mb-3">
-          <Form.Label column sm="2">Категория</Form.Label>
+          <Form.Label column sm="2"  className={"input-group-text"} >Категория</Form.Label>
           <Col sm="10">
-            <Form.Control value={this.state.categoryId} onChange={(e) => this.setState({categoryId: e.target.value})} placeholder="Категория"/>
+            <select className={"custom-select"} onChange={(e) => this.setState({categoryId: e.target.value})} >
+            { this.category.selectedCategory.id ? <option value={this.category.selectedCategory.id}>{this.category.selectedCategory.title}</option> : ""}
+            {
+              this.category.categories
+              .filter(
+                cat => cat.id !== this.category.selectedCategory.id
+              ).map( cat =>
+                <option key={cat.id} value={cat.id}>{cat.title}</option>
+              )
+
+            }
+            </select>
           </Col>
+
         </Form.Group>
+
 
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2">Галерея</Form.Label>
@@ -167,7 +189,7 @@ class ItemForm extends React.Component {
                        style={{position: 'absolute', top: 5, right: 10, fontSize: 32 }}
                        className={'text-danger'}
                        onClick={
-                              () => {this.galleryDelete(img.imgPath)}
+                              () => {this.galleryDelete(img.order)}
                        } />
                       <img
                       src={'http://127.0.0.1:5050' + img.imgPath}
