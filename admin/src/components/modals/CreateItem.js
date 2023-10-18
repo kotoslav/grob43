@@ -7,7 +7,16 @@ const CreateItem = ( {show, onHide, modalItem, setModalItem} ) => {
     const { item } = useContext(Context);
     let itemM = JSON.parse(JSON.stringify(modalItem));
     let newItem = (itemM.name === undefined);
-    let [form, setForm] = useState({});
+    const skelForm = {
+      name: "",
+      description: "",
+      article: "",
+      price: "",
+      categoryId: "",
+      gallery: []
+    };
+    modalItem = newItem ? skelForm : modalItem;
+    let [form, setForm] = useState({ ...skelForm });
 
     return (
     <Modal
@@ -27,9 +36,9 @@ const CreateItem = ( {show, onHide, modalItem, setModalItem} ) => {
       </Modal.Body>
       <Modal.Footer>
        { form.name ?
-         <Button variant={'outline-success'} onClick={() => {console.log(form)}} >Сохранить</Button>
+         <Button variant={'outline-success'} onClick={() => {console.log(form); setForm(skelForm)}} >Сохранить</Button>
          :
-         <Button variant={'outline-success'} onClick={() => {console.log(form)}} disabled>Сохранить</Button> }
+         <Button variant={'outline-success'} onClick={() => {console.log(form); setForm(skelForm)}} disabled>Сохранить</Button> }
         <Button variant={'outline-danger'} onClick={onHide}>Закрыть</Button>
       </Modal.Footer>
     </Modal>

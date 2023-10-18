@@ -20,16 +20,19 @@ class UserController {
         };
         let comparePassword = bcrypt.compareSync(password, user.password);
         if (!comparePassword) {
-            console.log(password, user.password);
             return next(ApiError.internal('Указан неверный пароль'));
         }
-        const token = generateJwt(user.id, user.email, user.role);
+        const token = generateJwt(user.id);
         return res.json({token});
     }
 
-    async check(req, res) {
+    async check(req, res, next) {
+        try {
         const token = generateJwt(req.user.id);
         return res.json({token});
+        } catch (e) {
+            return next(ApiError.internal('Указан неверный пароль'));
+        }
     }
 
     async update(req, res, next) {

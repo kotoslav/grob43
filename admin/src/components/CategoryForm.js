@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, Row, Col, Button, CloseButton, Card } from "react-bootstrap";
 import axios from "axios";
+import { $host } from "../http";
 
 class CategoryForm extends React.Component {
   constructor(props) {
@@ -9,24 +10,28 @@ class CategoryForm extends React.Component {
     this.setModalCategory = props.setModalCategory;
     this.setForm = props.setForm;
     this.state.gallery = this.state.imgPath ? [this.state.imgPath] : [];
+    this.gallery = [];
     this.state.drag = false;
   }
 
   galleryPush(imgPath) {
     let gallery = [imgPath]
     this.setState({gallery: gallery});
+    this.passForm();
   }
 
   galleryDelete(imgPath) {
     let gallery = [...this.state.gallery].filter( (img) => img !== imgPath);
     this.setState({gallery: gallery});
+    this.state.gallery = gallery;
+    this.passForm();
   }
 
   passForm() {
     let form = {
       title: this.state.title,
       description: this.state.description,
-      imgPath: this.state.imgPath
+      imgPath: this.state.gallery[0] ?? ""
     };
     this.setForm(form);
   }
@@ -36,17 +41,17 @@ class CategoryForm extends React.Component {
     e.preventDefault();
     let files = [...e.dataTransfer.files];
     if  (files) {
-      console.log(files);
         const formData = new FormData();
         formData.append('img', files[0]);
 
-        axios.post( 'http://127.0.0.1:5050/api/gallery/', formData)
+        $host.post( 'http://127.0.0.1:5050/api/gallery/', formData)
         .then( res => {
           this.galleryPush(res.data.imgPath);
         })
 
 
     }
+    this.passForm();
   }
 
 

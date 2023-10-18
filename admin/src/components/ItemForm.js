@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, Row, Col, Button, CloseButton, Card } from "react-bootstrap";
 import axios from "axios";
+import { $host } from "../http";
 
 class ItemForm extends React.Component {
   constructor(props) {
@@ -16,30 +17,41 @@ class ItemForm extends React.Component {
   }
 
   passForm() {
+
+    let gallery = this.state.galleryDrop
+    .sort((a, b) => {
+                        if (a.order > b.order) {
+                          return 1
+                        } else {
+                          return -1;
+                        }
+                      })
+    .map( pic => pic.imgPath);
     let form = {
       name: this.state.name,
       description: this.state.description,
       article: this.state.article,
       price: Number(this.state.price),
       categoryId: Number(this.state.categoryId),
-      gallery: [...this.state.gallery]
+      gallery: gallery
     };
     this.setForm(form);
   }
 
   galleryPush(imgPath) {
     let gallery = [...this.state.galleryDrop, {order: Date.now() , imgPath: imgPath, id: Date.now()}];
-    console.log(gallery);
     this.setState({galleryDrop: gallery});
+    this.passForm()
   }
 
   galleryDelete(imgOrder) {
     let gallery = [...this.state.galleryDrop].filter( (img) => img.order !== imgOrder);
     this.setState({galleryDrop: gallery});
+    this.state.galleryDrop = gallery;
+    this.passForm()
   }
 
   dragPreviewStart(e, img) {
-    console.log('drag',img);
     this.setState({currentIMG: {...img}})
   }
 
@@ -47,6 +59,7 @@ class ItemForm extends React.Component {
   }
 
   dragPreviewEnd(e) {
+    this.passForm()
   }
   dragPreviewOver(e) {
     e.preventDefault();
@@ -54,7 +67,6 @@ class ItemForm extends React.Component {
 
   previewDrop(e, img) {
     e.preventDefault();
-    console.log('drop', img);
     this.setState({galleryDrop: this.state.galleryDrop.map(
       (imgMap) => {
         if (imgMap.id === img.id) {
@@ -66,6 +78,7 @@ class ItemForm extends React.Component {
         return imgMap;
       }
     )})
+    this.passForm();
 
   }
 
@@ -77,14 +90,14 @@ class ItemForm extends React.Component {
       files.forEach( (file) => {
         const formData = new FormData();
         formData.append('img', file);
-
-        axios.post( 'http://127.0.0.1:5050/api/gallery/', formData)
+        $host.post( 'http://127.0.0.1:5050/api/gallery/', formData)
         .then( res => {
           this.galleryPush(res.data.imgPath);
         })
 
       })
     }
+    this.passForm();
   }
 
 
@@ -175,7 +188,7 @@ class ItemForm extends React.Component {
                       })
                       .map((img) =>
                         <Card
-                      key={img.imgPath}
+                      key={img.order}
                       style={{width: "100px", height: "100px", position: "relative"}}
                       draggable={true}
                       onDragStart={(e) => this.dragPreviewStart(e, img)}
@@ -200,7 +213,6 @@ class ItemForm extends React.Component {
                       <span>Нет изображений</span>
                     }
                   </Card>
-
 
         </Form.Group>
       </Form>
