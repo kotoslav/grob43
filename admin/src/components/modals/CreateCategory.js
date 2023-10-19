@@ -1,8 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { Form, ModalDialog, Modal, Button } from 'react-bootstrap';
 import CategoryForm from '../CategoryForm';
+import { categoryCreateOne, readAllCategory, categoryUpdate } from '../../http/itemAPI';
+import { Context } from '../../index';
 
-const CreateCategory = ( {show, onHide, modalCategory, setModalCategory} ) => {
+const CreateCategory =  ( {show, onHide, modalCategory, setModalCategory} ) => {
+    const {item} = useContext(Context)
+
     let category = JSON.parse(JSON.stringify(modalCategory));
     let newCat = (category.title == undefined);
     let state = newCat ? {
@@ -11,6 +15,25 @@ const CreateCategory = ( {show, onHide, modalCategory, setModalCategory} ) => {
         imgPath: ""
     } : category;
     let [form, setForm] = useState({});
+
+    const sendForm = async  () => {
+      if (newCat){
+          try {
+            const response = await categoryCreateOne(form);
+            readAllCategory().then(data => item.setCategories(data));
+          } catch (e) {
+            alert(e.response.data.message);
+          }
+      } else {
+          try {
+            const response = await categoryUpdate(form, modalCategory.id);
+            readAllCategory().then(data => item.setCategories(data));
+          } catch (e) {
+            alert(e.response.data.message);
+          }
+      }
+
+    }
 
 
     return (
@@ -28,13 +51,21 @@ const CreateCategory = ( {show, onHide, modalCategory, setModalCategory} ) => {
       </Modal.Header>
       <Modal.Body>
         <CategoryForm
-        state={modalCategory}
+        state={state}
         setModalCategory={setModalCategory}
         setForm={setForm}
         />
       </Modal.Body>
       <Modal.Footer>
-        <Button variant={'outline-success'} onClick={() => {console.log(form)}}>Сохранить</Button>
+             { Object.keys(form) != 0?
+         <Button variant={'outline-success'} onClick={() => {
+           if (category.id) {
+             form = {...form, id: category.id};
+          };
+           sendForm();
+           setForm({})}} >Сохранить</Button>
+         :
+         <Button variant={'outline-success'} onClick={() => {console.log(form); setForm({})}} disabled>Сохранить</Button> }
         <Button variant={'outline-danger'} onClick={onHide}>Закрыть</Button>
       </Modal.Footer>
     </Modal>

@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import CategoriesBar from '../components/CategoriesBar';
 import ItemList from '../components/ItemList';
 import CreateCategory from '../components/modals/CreateCategory';
 import CreateItem from '../components/modals/CreateItem';
+import { observer } from 'mobx-react-lite';
+import { Context } from '../index';
+import { readAllCategory } from '../http/itemAPI';
 
 
-const Admin = () => {
+const Admin = observer ( () => {
+    const {item} = useContext(Context);
+    useEffect( () => {
+        readAllCategory().then(
+            data => item.setCategories(data)
+        )
+    }, [])
+
     const [categoryVisible, setCategoryVisible] = useState(false);
     const [itemVisible, setItemVisible] = useState(false);
     const [modalCategory, setModalCategory] = useState({});
@@ -48,7 +58,7 @@ const Admin = () => {
             </Container>
         </div>
     );
-};
+})
 
 
 export default Admin;

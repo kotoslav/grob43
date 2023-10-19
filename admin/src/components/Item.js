@@ -14,7 +14,7 @@ const Item = ({item, modal}) => {
             }}
             >
             <Image src={'http://127.0.0.1:5050'  + item.gallery[0]} style={{objectFit: 'cover', width: '100%', height: '100%' }} />
-            <CloseButton style={{position: 'absolute', top: 5, right: 10, fontSize: 32 }} className={'text-danger'}  />
+            <CloseButton style={{position: 'absolute', top: 5, right: 10, fontSize: 32 }} className={'text-danger'} onClick={(e)=> e.stopPropagation()}  />
             <div style={{position: 'absolute', bottom: 0, width: '100%', minHeight: 150, opacity: 0.9 }} className={"text-light bg-dark"}>
                Артикул = {item.article} <br/>
                Наименование = {item.name} <br/>

@@ -16,7 +16,7 @@ const CreateItem = ( {show, onHide, modalItem, setModalItem} ) => {
       gallery: []
     };
     modalItem = newItem ? skelForm : modalItem;
-    let [form, setForm] = useState({ ...skelForm });
+    let [form, setForm] = useState({ });
 
     return (
     <Modal
@@ -35,8 +35,13 @@ const CreateItem = ( {show, onHide, modalItem, setModalItem} ) => {
       <ItemForm state={modalItem} category={{selectedCategory: item.selectedCategory, categories: item.categories }} setForm={setForm} />
       </Modal.Body>
       <Modal.Footer>
-       { form.name ?
-         <Button variant={'outline-success'} onClick={() => {console.log(form); setForm(skelForm)}} >Сохранить</Button>
+       { Object.keys(form) != 0 ?
+         <Button variant={'outline-success'} onClick={() => {
+          if (itemM.id) {
+             form = {...form, id: itemM.id};
+          };
+           console.log(form);
+           setForm({})}} >Сохранить</Button>
          :
          <Button variant={'outline-success'} onClick={() => {console.log(form); setForm(skelForm)}} disabled>Сохранить</Button> }
         <Button variant={'outline-danger'} onClick={onHide}>Закрыть</Button>

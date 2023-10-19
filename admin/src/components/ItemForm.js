@@ -41,6 +41,7 @@ class ItemForm extends React.Component {
   galleryPush(imgPath) {
     let gallery = [...this.state.galleryDrop, {order: Date.now() , imgPath: imgPath, id: Date.now()}];
     this.setState({galleryDrop: gallery});
+    this.state.galleryDrop = gallery;
     this.passForm()
   }
 
@@ -67,7 +68,7 @@ class ItemForm extends React.Component {
 
   previewDrop(e, img) {
     e.preventDefault();
-    this.setState({galleryDrop: this.state.galleryDrop.map(
+    let gallery = this.state.galleryDrop.map(
       (imgMap) => {
         if (imgMap.id === img.id) {
           return {...imgMap, order: this.state.currentIMG.order}
@@ -76,8 +77,10 @@ class ItemForm extends React.Component {
           return {...imgMap, order: img.order}
         }
         return imgMap;
-      }
-    )})
+      });
+
+    this.setState({galleryDrop: gallery })
+    this.state.galleryDrop = gallery;
     this.passForm();
 
   }
@@ -97,7 +100,6 @@ class ItemForm extends React.Component {
 
       })
     }
-    this.passForm();
   }
 
 

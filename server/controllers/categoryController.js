@@ -2,7 +2,7 @@ const {Category} = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 class CategoryController {
-    async createOne(req, res) {
+    async createOne(req, res, next) {
         const {title, description, imgPath} = req.body;
         try {
             const category = await Category.create({title, description, imgPath});
@@ -12,7 +12,7 @@ class CategoryController {
         }
     }
 
-    async readOne(req, res) {
+    async readOne(req, res, next) {
         try {
             const category = await Category.findByPk(req.params['id']);
             return res.json(category);
@@ -21,16 +21,18 @@ class CategoryController {
         }
     }
 
-    async readAll(req, res) {
+    async readAll(req, res, next) {
         try {
-            const category = await Category.findAll();
+            const category = await Category.findAll({
+                order: [['id', 'ASC']]
+            });
             return res.json(category);
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }
     }
 
-    async updateOne(req, res) {
+    async updateOne(req, res, next) {
         const {title, description, imgPath} = req.body;
         try {
             const category = await Category.update({title, description, imgPath}, {
@@ -44,7 +46,7 @@ class CategoryController {
         }
     }
 
-    async deleteOne(req, res) {
+    async deleteOne(req, res, next) {
         try {
             const category = await Category.destroy({
                 where: {
