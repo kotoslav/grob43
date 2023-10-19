@@ -21,6 +21,7 @@ const CreateCategory =  ( {show, onHide, modalCategory, setModalCategory} ) => {
           try {
             const response = await categoryCreateOne(form);
             readAllCategory().then(data => item.setCategories(data));
+            onHide();
           } catch (e) {
             alert(e.response.data.message);
           }
@@ -28,6 +29,7 @@ const CreateCategory =  ( {show, onHide, modalCategory, setModalCategory} ) => {
           try {
             const response = await categoryUpdate(form, modalCategory.id);
             readAllCategory().then(data => item.setCategories(data));
+            onHide();
           } catch (e) {
             alert(e.response.data.message);
           }

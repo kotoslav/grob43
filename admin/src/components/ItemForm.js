@@ -7,7 +7,7 @@ class ItemForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = props.state;
-    this.setModalItem= props.setModalItem;
+    this.setModalItem = props.setModalItem;
     this.state.galleryDrop = this.state.gallery ? [...this.state.gallery] : [];
     this.state.galleryDrop = this.state.galleryDrop.map((imgPath, id) => {return {order: id, imgPath: imgPath, id: id}});
     this.counter = this.state.galleryDrop.length;
@@ -138,13 +138,20 @@ class ItemForm extends React.Component {
           <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2"  className={"input-group-text"} >Категория</Form.Label>
           <Col sm="10">
-            <select className={"custom-select"} onChange={(e) => this.setState({categoryId: e.target.value})} >
-            { this.category.selectedCategory.id ? <option value={this.category.selectedCategory.id}>{this.category.selectedCategory.title}</option> : ""}
+            <select className={"custom-select"} defaultValue={this.state.categoryId} onChange={(e) => {  this.state.categoryId = e.target.value ;this.setState({categoryId: e.target.value}) }} >
+            {
+
+              <option value={this.state.categoryId}>{
+                this.category.categories.find(cat => cat.id == this.state.categoryId).title
+              }</option>
+
+            }
             {
               this.category.categories
               .filter(
                 cat => cat.id !== this.category.selectedCategory.id
-              ).map( cat =>
+              )
+              .map( cat =>
                 <option key={cat.id} value={cat.id}>{cat.title}</option>
               )
 

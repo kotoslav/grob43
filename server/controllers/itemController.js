@@ -32,8 +32,10 @@ class ItemController {
         let offset = page * limit - limit;
         try {
             const item = await Item.findAll({
-                where: {categoryId: categoryId}, limit, offset
-            });
+                where: {categoryId: categoryId}, limit, offset,
+                order: [['id', 'ASC']]
+            }
+            );
             return res.json(item);
         } catch (e) {
             next(ApiError.badRequest(e.message))

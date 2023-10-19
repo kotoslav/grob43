@@ -2,9 +2,12 @@ import {React, useContext, useState } from 'react';
 import { Form, ModalDialog, Modal, Button } from 'react-bootstrap';
 import ItemForm from "../ItemForm";
 import { Context } from '../../index';
+import { itemCreateOne, readAllCategory, itemReadAllByCategory, itemUpdate } from '../../http/itemAPI';
+import { observer } from 'mobx-react-lite';
 
 const CreateItem = ( {show, onHide, modalItem, setModalItem} ) => {
     const { item } = useContext(Context);
+
     let itemM = JSON.parse(JSON.stringify(modalItem));
     let newItem = (itemM.name === undefined);
     const skelForm = {
@@ -12,11 +15,33 @@ const CreateItem = ( {show, onHide, modalItem, setModalItem} ) => {
       description: "",
       article: "",
       price: "",
-      categoryId: "",
+      categoryId: item.selectedCategory.id ? item.selectedCategory.id : 0 ,
       gallery: []
     };
     modalItem = newItem ? skelForm : modalItem;
     let [form, setForm] = useState({ });
+
+
+    const sendForm = async  () => {
+      if (newItem){
+          try {
+            const response = await itemCreateOne(form);
+            itemReadAllByCategory(item.selectedCategory.id).then(data => item.setItems(data));
+            onHide()
+          } catch (e) {
+            alert(e.response.data.message);
+          }
+      } else {
+          try {
+            const response = await itemUpdate(form, modalItem.id);
+            itemReadAllByCategory(item.selectedCategory.id).then(data => item.setItems(data));
+            onHide()
+          } catch (e) {
+            alert(e.response.data.message);
+          }
+      }
+
+    }
 
     return (
     <Modal
@@ -40,8 +65,10 @@ const CreateItem = ( {show, onHide, modalItem, setModalItem} ) => {
           if (itemM.id) {
              form = {...form, id: itemM.id};
           };
-           console.log(form);
-           setForm({})}} >Сохранить</Button>
+           //console.log(form);
+           sendForm();
+           setForm({});
+        }} >Сохранить</Button>
          :
          <Button variant={'outline-success'} onClick={() => {console.log(form); setForm(skelForm)}} disabled>Сохранить</Button> }
         <Button variant={'outline-danger'} onClick={onHide}>Закрыть</Button>

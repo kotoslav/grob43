@@ -7,16 +7,13 @@ import CreateCategory from '../components/modals/CreateCategory';
 import CreateItem from '../components/modals/CreateItem';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../index';
-import { readAllCategory } from '../http/itemAPI';
+import { readAllCategory, itemReadAllByCategory } from '../http/itemAPI';
 
 
 const Admin = observer ( () => {
     const {item} = useContext(Context);
-    useEffect( () => {
-        readAllCategory().then(
-            data => item.setCategories(data)
-        )
-    }, [])
+
+    itemReadAllByCategory(item.selectedCategory.id).then(data => item.setItems(data));
 
     const [categoryVisible, setCategoryVisible] = useState(false);
     const [itemVisible, setItemVisible] = useState(false);

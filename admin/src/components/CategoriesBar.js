@@ -1,16 +1,19 @@
 import { observer } from 'mobx-react-lite';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Context } from '../index';
-import { Button, ListGroup, CloseButton } from 'react-bootstrap';
+import { Button, ListGroup, CloseButton, Modal } from 'react-bootstrap';
 import { categoryRemove, readAllCategory } from '../http/itemAPI';
 
 const CategoriesBar = observer(({modal}) => {
     const { item } = useContext(Context);
+    const [confirmModalVisible, setConfirmMoadlVisible] = useState(false);
+    const [confirmCat, setConfirmCat] = useState({});
 
     const deleteCategory = async (id) => {
       try {
         const response = await categoryRemove(id);
         readAllCategory().then(data => item.setCategories(data));
+        item.setSelectedCategory(item.categories[0]);
       } catch (e) {
         alert(e.response.data.message);
       }
@@ -52,7 +55,10 @@ const CategoriesBar = observer(({modal}) => {
             </Button>
             <Button
              className='bg-light btn-outline-danger'
-             onClick={() => {deleteCategory(cat.id)}}
+             onClick={() => {
+               setConfirmCat(cat);
+               setConfirmMoadlVisible(true)
+            }}
             >
 
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" className={"bi bi-trash-fill"} viewBox="0 0 16 16">
@@ -68,6 +74,32 @@ const CategoriesBar = observer(({modal}) => {
         >
           Создать новую категорию
         </ListGroup.Item>
+
+        <Modal
+          show={confirmModalVisible}
+          onHide={() => setConfirmMoadlVisible(false)}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+        <Modal.Header closeButton>
+          <Modal.Title>Удаление категории</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <p>Вы уверены что хотите удалить категорию {confirmCat.title}?
+          Все товары относящиеся к данной категории будут так же удалены!
+          </p>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button onClick={() => {
+            deleteCategory(confirmCat.id);
+            setConfirmMoadlVisible(false)
+          }} variant="primary">Подтвердить</Button>
+          <Button onClick={() => setConfirmMoadlVisible(false)} variant="secondary">Закрыть</Button>
+        </Modal.Footer>
+      </Modal>
       </ListGroup>
     );
 });
