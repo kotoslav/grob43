@@ -68,6 +68,9 @@ class ItemForm extends React.Component {
 
   previewDrop(e, img) {
     e.preventDefault();
+
+    let files = [...e.dataTransfer.files];
+    if (files.length === 0) {
     let gallery = this.state.galleryDrop.map(
       (imgMap) => {
         if (imgMap.id === img.id) {
@@ -83,23 +86,27 @@ class ItemForm extends React.Component {
     this.state.galleryDrop = gallery;
     this.passForm();
 
+    }
   }
 
 
   onDropHandler(e) {
     e.preventDefault();
     let files = [...e.dataTransfer.files];
+    const fileExtensions = ['jpeg', 'jpg', 'png', 'webp', 'gif', 'svg']
     if  (files) {
       files.forEach( (file) => {
+        if (fileExtensions.includes(file.name.split('.').at(-1).toLowerCase()) ) {
         const formData = new FormData();
         formData.append('img', file);
         $host.post( 'http://127.0.0.1:5050/api/gallery/', formData)
         .then( res => {
           this.galleryPush(res.data.imgPath);
         })
-
+      }
       })
     }
+    this.setState({drag: false});
   }
 
 
@@ -165,8 +172,9 @@ class ItemForm extends React.Component {
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2">Галерея</Form.Label>
 
-          <Card style={{width: "100%", height: '100px'}} className={'m-2 d-flex align-items-center justify-content-center'}
-          onDragStart={(e) => {
+
+          <Card style={{width: "100%", height: 110}} className={`m-2 d-flex flex-row  ${ this.state.drag ? "border-primary" : ""} ` }
+          onDragEnter={(e) => {
             e.preventDefault();
             this.setState({drag: true});
           }}
@@ -175,18 +183,12 @@ class ItemForm extends React.Component {
             this.setState({drag: false});
           }}
            onDragOver={(e) => {
+
             e.preventDefault();
             this.setState({drag: true});
           }}
           onDrop={(e)=>this.onDropHandler(e)}
-
           >
-          {!this.state.drag ? "Бросьте каку" : "Ловлю"}
-          </Card>
-
-
-
-          <Card style={{width: "100%"}} className={'m-2 d-flex flex-row'}>
                     {this.state.galleryDrop.length > 0 ? this.state.galleryDrop
                       .sort((a, b) => {
                         if (a.order > b.order) {
@@ -219,7 +221,14 @@ class ItemForm extends React.Component {
                       />
                       </Card>
                     ):
-                      <span>Нет изображений</span>
+                      <span
+                      style={{
+                        display: 'flex',
+                        width: '100%',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                      >Перетяните нужные изображения в эту область</span>
                     }
                   </Card>
 

@@ -12,6 +12,23 @@ class CategoryForm extends React.Component {
     this.state.gallery = this.state.imgPath ? [this.state.imgPath] : [];
     this.gallery = [];
     this.state.drag = false;
+
+    this.state.validTitle = true;
+    this.state.validDescription = true;
+    this.state.validImgPath = true;
+  }
+
+  changeTitle (e) {
+    this.setState({title: e.target.value})
+    this.setState({validTitle: this.validationTitle(e.target.value)})
+  }
+
+  validationTitle (value) {
+    return this.notEmpty(value);
+  }
+
+  notEmpty(value) {
+    return value !== 0 && value !== "" && value;
   }
 
   galleryPush(imgPath) {
@@ -40,18 +57,20 @@ class CategoryForm extends React.Component {
   onDropHandler(e) {
     e.preventDefault();
     let files = [...e.dataTransfer.files];
+    const fileExtensions = ['jpeg', 'jpg', 'png', 'webp', 'gif', 'svg']
     if  (files) {
-        const formData = new FormData();
-        formData.append('img', files[0]);
+         if (fileExtensions.includes(files[0].name.split('.').at(-1).toLowerCase()) ) {
+          const formData = new FormData();
+          formData.append('img', files[0]);
 
-        $host.post( 'http://127.0.0.1:5050/api/gallery/', formData)
-        .then( res => {
-          this.galleryPush(res.data.imgPath);
+          $host.post( 'http://127.0.0.1:5050/api/gallery/', formData)
+          .then( res => {
+            this.galleryPush(res.data.imgPath);
         })
-
-
+        }
     }
     this.passForm();
+    this.setState({drag: false});
   }
 
 
@@ -61,7 +80,7 @@ class CategoryForm extends React.Component {
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm="2">Заголовок</Form.Label>
           <Col sm="10">
-            <Form.Control value={this.state.title} onChange={(e) => this.setState({title: e.target.value})} placeholder="Заголовок"/>
+            <Form.Control value={this.state.title} onChange={(e) => this.changeTitle(e)} placeholder="Заголовок"  className={`  ${this.state.validTitle? "" : "border-danger"} `}  />
           </Col>
         </Form.Group>
 
@@ -73,10 +92,10 @@ class CategoryForm extends React.Component {
         </Form.Group>
 
         <Form.Group as={Row} className="mb-3">
+         <Form.Label column sm="2">Изображение</Form.Label>
 
 
-
-          <Card style={{width: "100%", height: '100px'}} className={'m-2 d-flex align-items-center justify-content-center'}
+          <Card style={{width: "100%", height: '100px'}} className={`m-2 d-flex flex-row  ${ this.state.drag ? "border-primary" : ""} ` }
           onDragStart={(e) => {
             e.preventDefault();
             this.setState({drag: true});
@@ -92,12 +111,7 @@ class CategoryForm extends React.Component {
           onDrop={(e)=>this.onDropHandler(e)}
 
           >
-          {!this.state.drag ? "Бросьте каку" : "Ловлю"}
-          </Card>
 
-
-
-          <Card style={{width: "100%"}} className={'m-2 d-flex flex-row'}>
                     {this.state.gallery.length > 0 ? this.state.gallery.map((img) =>
                       <Card key={img} style={{width: "100px", height: "100px", position: "relative"}}>
                        <CloseButton style={{position: 'absolute', top: 5, right: 10, fontSize: 32 }} className={'text-danger'}
@@ -107,9 +121,22 @@ class CategoryForm extends React.Component {
                       <img src={'http://127.0.0.1:5050' + img} style={{objectFit: 'cover', width: '100%', height: '100%' }} />
                       </Card>
                     ):
-                      <span>Нет изображений</span>
+                       <span
+                      style={{
+                        display: 'flex',
+                        width: '100%',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                      >Перетяните нужные изображения в эту область</span>
                     }
-                  </Card>
+
+
+          </Card>
+
+
+
+
 
 
         </Form.Group>
