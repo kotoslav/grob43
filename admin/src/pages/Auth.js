@@ -14,7 +14,7 @@ const Auth = observer(() => {
 
     const signIn = async () => {
         try {
-            const response = await authorization(login, password);
+            await authorization(login, password);
             user.setIsAuth(true);
             history.push(ADMIN_ROUTE);
         } catch (e) {

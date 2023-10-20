@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect} from 'react';
 import NavBar from '../components/NavBar';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import CategoriesBar from '../components/CategoriesBar';
@@ -7,20 +7,26 @@ import CreateCategory from '../components/modals/CreateCategory';
 import CreateItem from '../components/modals/CreateItem';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../index';
-import { readAllCategory, itemReadAllByCategory } from '../http/itemAPI';
+import { itemReadAllByCategory } from '../http/itemAPI';
+import PaginationPages from '../components/PaginationPages';
 
 
 const Admin = observer ( () => {
     const {item} = useContext(Context);
+    useEffect(() => {
+        itemReadAllByCategory(item.selectedCategory.id, item.page).then(
+        data => {item.setItems(data);
+        }
+    );
+    }, [item.page, item.selectedCategory])
 
-    itemReadAllByCategory(item.selectedCategory.id).then(data => item.setItems(data));
 
     const [categoryVisible, setCategoryVisible] = useState(false);
     const [itemVisible, setItemVisible] = useState(false);
     const [modalCategory, setModalCategory] = useState({});
     const [modalItem, setModalItem] = useState({});
     return (
-        <div className='bg-secondary' style={{minHeight:"100vh"}}>
+        <div className='bg-secondary' style={{minHeight:"100vh", height: '100%', paddingBottom:'3rem'}}>
             <NavBar />
             <Container>
                 <Row className='mt-2'>
@@ -40,6 +46,7 @@ const Admin = observer ( () => {
                     <ItemList
                     modal={{setModalItem, setItemVisible}}
                     />
+                    <PaginationPages/>
                     </Col>
                 </Row>
                 <CreateCategory

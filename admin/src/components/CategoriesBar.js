@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react';
 import { Context } from '../index';
-import { Button, ListGroup, CloseButton, Modal } from 'react-bootstrap';
+import { Button, ListGroup, Modal } from 'react-bootstrap';
 import { categoryRemove, readAllCategory } from '../http/itemAPI';
 
 const CategoriesBar = observer(({modal}) => {
@@ -11,7 +11,7 @@ const CategoriesBar = observer(({modal}) => {
 
     const deleteCategory = async (id) => {
       try {
-        const response = await categoryRemove(id);
+        await categoryRemove(id);
         readAllCategory().then(data => item.setCategories(data));
         item.setSelectedCategory(item.categories[0]);
       } catch (e) {

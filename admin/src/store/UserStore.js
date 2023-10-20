@@ -8,7 +8,7 @@ export default class UserStore {
 
     setIsAuth(bool) {
         this._isAuth = bool;
-        if (bool == false) {
+        if (bool === false) {
             localStorage.setItem('token', "")
         }
     }

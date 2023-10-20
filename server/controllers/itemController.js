@@ -1,11 +1,11 @@
-const {Item} = require('../models/models');
+const { Item } = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 class ItemController {
     async createOne(req, res, next) {
-        const {name, description, article, price, categoryId, gallery} = req.body;
+        const { name, description, article, price, categoryId, gallery } = req.body;
         try {
-            const item = await Item.create({name, description, article, price, categoryId, gallery});
+            const item = await Item.create({ name, description, article, price, categoryId, gallery });
             return res.json(item);
         } catch (e) {
             next(ApiError.badRequest(e.message))
@@ -14,25 +14,25 @@ class ItemController {
 
     async readOne(req, res, next) {
         try {
-        if (typeof req.params['id'] !== "number") {
-            next(ApiError.notFound("Не найдено"))
-        }
-        const item = await Item.findByPk(req.params['id']);
-        return res.json(item);
+            if (typeof req.params['id'] !== "number") {
+                next(ApiError.notFound("Не найдено"))
+            }
+            const item = await Item.findByPk(req.params['id']);
+            return res.json(item);
         } catch (e) {
             next(ApiError.badRequest("Проверьте тело запроса"))
         }
     }
 
-    async readAllByCategory(req, res) {
-        let {page, categoryId} = req.query;
+    async readAllByCategory(req, res, next) {
+        let { page, categoryId } = req.query;
         categoryId = categoryId ?? 1;
         page = page ?? 1;
-        const limit = process.env.PAGE_LIMIT ?? 10;
+        const limit = process.env.PAGE_LIMIT ?? 12;
         let offset = page * limit - limit;
         try {
-            const item = await Item.findAll({
-                where: {categoryId: categoryId}, limit, offset,
+            const item = await Item.findAndCountAll({
+                where: { categoryId: categoryId }, limit, offset,
                 order: [['id', 'ASC']]
             }
             );
@@ -42,14 +42,14 @@ class ItemController {
         }
     }
 
-    async updateOne(req, res) {
-        const {name, description, article, price, categoryId, gallery} = req.body;
+    async updateOne(req, res, next) {
+        const { name, description, article, price, categoryId, gallery } = req.body;
         try {
             const item = await Item.update(
-            {name, description, article, price, categoryId, gallery} ,
+                { name, description, article, price, categoryId, gallery },
                 {
-                where: {
-                    id: req.params['id']
+                    where: {
+                        id: req.params['id']
                     }
                 });
             return res.json(item);
@@ -58,7 +58,7 @@ class ItemController {
         }
     }
 
-    async deleteOne(req, res) {
+    async deleteOne(req, res, next) {
         try {
             const item = await Item.destroy({
                 where: {

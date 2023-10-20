@@ -12,7 +12,7 @@ const ItemList = observer(( {modal}) => {
 
     const deleteItem = async (id) => {
           try {
-            const response = await itemRemove(id);
+            await itemRemove(id);
             itemReadAllByCategory(item.selectedCategory.id).then(data => item.setItems(data));
             setConfirmMoadlVisible(false);
           } catch (e) {

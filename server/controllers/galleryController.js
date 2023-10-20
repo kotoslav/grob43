@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require("fs");
 
 class GalleryController {
-    async createOne(req, res) {
+    async createOne(req, res, next) {
         try {
             const img = req.files.img;
             let fileName = uuid.v4() + '.' + img.name.match(/\.([^.]+)$/)?.[1];
@@ -16,7 +16,7 @@ class GalleryController {
         }
     }
 
-    async deleteOne(req, res) {
+    async deleteOne(req, res, next) {
         let fileName = req.body.path.split("/").pop();
         try {
             fs.unlinkSync(path.resolve(__dirname, '..', 'upload', fileName));

@@ -6,11 +6,15 @@ export default class ItemStore {
 		this._categories = [];
 		this._selectedCategory = {}
 		this._selectedItem = {}
+		this._page = 1
+		this._totalCount = 0
+		this._limit = 12
 		makeAutoObservable(this);
 	}
 
 	setItems(items) {
-		this._items = items;
+		this._totalCount = items.count;
+		this._items = items.rows;
 	}
 
 	setCategories(categories) {
@@ -19,6 +23,14 @@ export default class ItemStore {
 
 	setSelectedCategory(category) {
 		this._selectedCategory = category;
+	}
+
+	setPage(page) {
+		this._page = page;
+	}
+
+	setTotalCount(count) {
+		this._totalCount = count;
 	}
 
 	get items() {
@@ -31,6 +43,18 @@ export default class ItemStore {
 
 	get selectedCategory() {
 		return this._selectedCategory;
+	}
+
+	get page() {
+		return this._page;
+	}
+
+	get totalCount() {
+		return this._totalCount;
+	}
+
+	get limit() {
+		return this._limit;
 	}
 
 }
