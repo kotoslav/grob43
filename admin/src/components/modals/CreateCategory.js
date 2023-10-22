@@ -21,7 +21,10 @@ const CreateCategory = ({ show, onHide, modalCategory, setModalCategory }) => {
         if (newCat) {
             try {
                 await categoryCreateOne(form);
-                readAllCategory().then(data => item.setCategories(data));
+                readAllCategory().then(data => {
+                    item.setCategories(data);
+                    if (!item.selectedCategory.id) item.setSelectedCategory({...data[0]})
+                });
                 onHide();
             } catch (e) {
                 alert(e.response.data.message);

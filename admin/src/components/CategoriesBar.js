@@ -12,8 +12,8 @@ const CategoriesBar = observer(({modal}) => {
     const deleteCategory = async (id) => {
       try {
         await categoryRemove(id);
-        readAllCategory().then(data => item.setCategories(data));
-        item.setSelectedCategory(item.categories[0]);
+        readAllCategory().then(data => {item.setCategories(data);
+          item.setSelectedCategory({...data[0]}) });
       } catch (e) {
         alert(e.response.data.message);
       }

@@ -33,7 +33,7 @@ class ItemController {
         try {
             const item = await Item.findAndCountAll({
                 where: { categoryId: categoryId }, limit, offset,
-                order: [['id', 'ASC']]
+                order: [['id', 'DESC']]
             }
             );
             return res.json(item);

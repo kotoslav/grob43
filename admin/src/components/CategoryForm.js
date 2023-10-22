@@ -1,6 +1,7 @@
 import React, { createRef } from "react";
 import { Form, Row, Col, CloseButton, Card } from "react-bootstrap";
 import { $host } from "../http";
+import { uploadImage } from "../http/itemAPI";
 
 class CategoryForm extends React.Component {
     constructor(props) {
@@ -88,12 +89,9 @@ class CategoryForm extends React.Component {
         const fileExtensions = ['jpeg', 'jpg', 'png', 'webp', 'gif', 'svg']
         if (files && !this.state.imgPath) {
             if (fileExtensions.includes(files[0].name.split('.').at(-1).toLowerCase())) {
-                const formData = new FormData();
-                formData.append('img', files[0]);
-
-                $host.post('http://127.0.0.1:5050/api/gallery/', formData)
-                    .then(res => {
-                        this.galleryPush(res.data.imgPath);
+                uploadImage(files[0])
+                    .then(data => {
+                        this.galleryPush(data.imgPath);
                     })
             }
         }
@@ -103,7 +101,7 @@ class CategoryForm extends React.Component {
 
     render() {
         return (
-            <Form onKeyUp={() => this.passForm()} onDrop={() => this.passForm()} >
+            <Form onKeyUp={() => this.passForm()} onDrop={() => this.passForm()} onKeyDown={(e) => {if (e.key === 'Enter') e.preventDefault()}}>
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm="2">Заголовок</Form.Label>
                     <Col sm="10">
@@ -118,7 +116,7 @@ class CategoryForm extends React.Component {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm="2">Описание</Form.Label>
                     <Col sm="10">
-                        <Form.Control as="textarea" rows={3} value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Описание" />
+                        <Form.Control as="textarea" rows={3} value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} onKeyDown={(e) => {if (e.key === 'Enter') e.stopPropagation()}} placeholder="Описание" />
                     </Col>
                 </Form.Group>
 
@@ -168,7 +166,7 @@ class CategoryForm extends React.Component {
                                     onClick={
                                         () => { this.galleryDelete(img) }
                                     } />
-                                <img src={'http://127.0.0.1:5050' + img} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+                                <img src={process.env.REACT_APP_API_URL + img} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
                             </Card>
                         ) :
                             <span

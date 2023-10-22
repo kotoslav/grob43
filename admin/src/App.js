@@ -21,17 +21,17 @@ const App = observer (() => {
         }
         )
         .finally(() => setLoading(false));
-
+/*
         readAllCategory().then(
             data => {
                 item.setCategories(data);
-                item.setSelectedCategory({...data[0]});
+                //item.setSelectedCategory({...data[0]});
             }
         );
         itemReadAllByCategory(item.selectedCategory.id).then(
             data => item.setItems(data)
         );
-
+*/
 
     }, [])
 

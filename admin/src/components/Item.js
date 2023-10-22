@@ -14,7 +14,7 @@ const Item = ({item, modal, setConfirmItem, setConfirmMoadlVisible }) => {
                 modal.setItemVisible(true);
             }}
             >
-            <Image src={'http://127.0.0.1:5050'  + item.gallery[0]} style={{objectFit: 'cover', width: '100%', height: '100%' }} />
+            <Image src={process.env.REACT_APP_API_URL  + item.gallery[0]} style={{objectFit: 'cover', width: '100%', height: '100%' }} />
             <CloseButton
             style={{position: 'absolute', top: 5, right: 10, fontSize: 32 }} className={'text-danger'}
             onClick={(e)=> {

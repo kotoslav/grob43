@@ -1,21 +1,52 @@
 import React from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
-import { SHOP_ROUTE } from '../utils/consts';
+import { useHistory } from 'react-router-dom';
+import { SHOP_ROUTE, CONTACTS_ROUTE } from '../utils/consts';
 
 const NavBar = () => {
+    const history = useHistory();
 
     return (
-      <Navbar bg="dark" data-bs-theme="dark" variant="dark">
-        <Container>
-          <NavLink class="badge badge-dark" to={SHOP_ROUTE}>GROB43</NavLink>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
+    <div className="header__top">
+        <nav className="nav">
+            <div className="nav__logo">
+                <a className="logo"
+                href="/"
+                onClick={e => {
+                  e.preventDefault();
+                  history.push(SHOP_ROUTE)
+                }}
+                ><img className="logo__img" src="./img/header/logo.svg" alt="logo"/></a>
+            </div>
+            <div className="nav__conacts">
+                <div className="img-phone"><img className="img-phone__icon"src="./img/header/phone.svg" alt="Телефон"/></div>
+                <div className="phone">
+                    <a className="phone__number" href="tel:89128252323">+7 (912) 825-23-23</a>
+                    <a className="phone__number" href="tel:89127032010">+7 (912) 703-20-10</a>
+                </div>
+            </div>
+            <ul className="nav__list">
+                <li className="nav__item">
+                <a
+                className="nav__link"
+                href="/"
+                onClick={e => {
+                  e.preventDefault();
+                  history.push(SHOP_ROUTE)
+                }}
+
+                >Главня</a></li>
+                <li className="nav__item">
+                <a
+                className="nav__link"
+                href="/contacts"
+                onClick={e => {
+                  e.preventDefault();
+                  history.push(CONTACTS_ROUTE)
+                }}
+                >Контакты</a></li>
+            </ul>
+        </nav>
+    </div>
     );
 };
 

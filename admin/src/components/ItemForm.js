@@ -1,6 +1,7 @@
 import React, { createRef } from "react";
 import { Form, Row, Col, CloseButton, Card } from "react-bootstrap";
 import { $host } from "../http";
+import { uploadImage } from "../http/itemAPI";
 
 class ItemForm extends React.Component {
     constructor(props) {
@@ -141,11 +142,9 @@ class ItemForm extends React.Component {
         if (files) {
             files.forEach((file) => {
                 if (fileExtensions.includes(file.name.split('.').at(-1).toLowerCase())) {
-                    const formData = new FormData();
-                    formData.append('img', file);
-                    $host.post('http://127.0.0.1:5050/api/gallery/', formData)
-                        .then(res => {
-                            this.galleryPush(res.data.imgPath);
+                        uploadImage(file)
+                        .then(data => {
+                            this.galleryPush(data.imgPath);
                         })
                 }
             })
@@ -155,7 +154,7 @@ class ItemForm extends React.Component {
 
     render() {
         return (
-            <Form onKeyUp={() => this.passForm()} onDrop={() => this.passForm()} onChange={() => this.passForm()}>
+            <Form onKeyUp={() => this.passForm()} onDrop={() => this.passForm()} onChange={() => this.passForm()} onKeyDown={(e) => {if (e.key === 'Enter') e.preventDefault()}} >
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm="2">Наименование</Form.Label>
                     <Col sm="10">
@@ -171,7 +170,13 @@ class ItemForm extends React.Component {
                 <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm="2">Описание</Form.Label>
                     <Col sm="10">
-                        <Form.Control as="textarea" rows={3} value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Описание" />
+                        <Form.Control as="textarea"
+                        rows={3}
+                        value={this.state.description}
+                        onChange={(e) => this.setState({ description: e.target.value })}
+                        onKeyDown={(e) => {if (e.key === 'Enter') e.stopPropagation()}}
+                        placeholder="Описание"
+                        />
                     </Col>
                 </Form.Group>
 
@@ -285,7 +290,7 @@ class ItemForm extends React.Component {
                                             () => { this.galleryDelete(img.order) }
                                         } />
                                     <img
-                                        src={'http://127.0.0.1:5050' + img.imgPath}
+                                        src={process.env.REACT_APP_API_URL + img.imgPath}
                                         style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                                     />
                                 </Card>

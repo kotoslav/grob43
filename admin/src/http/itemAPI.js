@@ -45,3 +45,10 @@ export const itemRemove = async (id) => {
     const { data } = await $host.delete(`api/item/${id}`);
     return data;
 }
+
+export const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append('img', file);
+    const {data} = await $host.post('api/gallery/', formData);
+    return data;
+}

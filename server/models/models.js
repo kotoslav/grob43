@@ -10,7 +10,7 @@ const User = sequelize.define('user', {
 const Item = sequelize.define('item', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, allowNull: false},
-    description: {type: DataTypes.STRING},
+    description: {type: DataTypes.TEXT},
     article: {type: DataTypes.STRING, allowNull: false, unique: true},
     price: {type: DataTypes.INTEGER},
     categoryId: {type: DataTypes.INTEGER},
@@ -20,7 +20,7 @@ const Item = sequelize.define('item', {
 const Category = sequelize.define('category', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     title: {type: DataTypes.STRING, allowNull: false},
-    description: {type: DataTypes.STRING},
+    description: {type: DataTypes.TEXT},
     imgPath: {type: DataTypes.STRING}
 });
 

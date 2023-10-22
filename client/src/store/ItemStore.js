@@ -1,77 +1,60 @@
-import {makeAutoObservable} from "mobx";
+import { makeAutoObservable } from "mobx";
 
 export default class ItemStore {
-    constructor() {
-        this._items =[
-	{
-		"id": 4,
-		"name": "Крест11",
-		"description": "",
-		"article": "321Ж",
-		"price": 320,
-		"categoryId": 3,
-		"mainImgPath": "img/krest1.png",
-		"createdAt": "2023-10-08T10:35:05.767Z",
-		"updatedAt": "2023-10-08T10:35:05.767Z"
-	},
-	{
-		"id": 5,
-		"name": "Крест11",
-		"description": "",
-		"article": "321Ж",
-		"price": 320,
-		"categoryId": 3,
-		"mainImgPath": "img/krest1.png",
-		"createdAt": "2023-10-08T10:35:09.839Z",
-		"updatedAt": "2023-10-08T10:35:09.839Z"
-	},
-	{
-		"id": 3,
-		"name": "Крест очень большой",
-		"description": "",
-		"article": "321Ж1",
-		"price": 320,
-		"categoryId": 3,
-		"mainImgPath": "img/krest1.png",
-		"createdAt": "2023-10-08T10:34:18.922Z",
-		"updatedAt": "2023-10-08T10:42:21.651Z"
+	constructor() {
+		this._items = [];
+		this._categories = [];
+		this._selectedCategory = {}
+		this._selectedItem = {}
+		this._page = 1
+		this._totalCount = 0
+		this._limit = 12
+		makeAutoObservable(this);
 	}
-];
-        this._categories = [
-	{
-		"id": 1,
-		"title": "Кресты",
-		"description": "",
-		"imgPath": "",
-		"createdAt": "2023-10-08T09:41:13.869Z",
-		"updatedAt": "2023-10-08T09:41:13.869Z"
-	},
-	{
-		"id": 3,
-		"title": "Кресты",
-		"description": "",
-		"imgPath": "",
-		"createdAt": "2023-10-08T09:41:39.478Z",
-		"updatedAt": "2023-10-08T09:41:39.478Z"
+
+	setItems(items) {
+		this._totalCount = items.count;
+		this._items = items.rows;
 	}
-];
-        makeAutoObservable(this);
-    }
 
-    setItems(items) {
-        this._items = items;
-    }
+	setCategories(categories) {
+		this._categories = categories;
+	}
 
-    setCategories(categories) {
-        this._categories = categories;
-    }
+	setSelectedCategory(category) {
+		this._selectedCategory = category;
+	}
 
-    get items() {
-        return this._items
-    }
+	setPage(page) {
+		this._page = page;
+	}
 
-    get categories() {
-        return this._categories
-    }
+	setTotalCount(count) {
+		this._totalCount = count;
+	}
+
+	get items() {
+		return this._items;
+	}
+
+	get categories() {
+		return this._categories;
+	}
+
+	get selectedCategory() {
+		return this._selectedCategory;
+	}
+
+	get page() {
+		return this._page;
+	}
+
+	get totalCount() {
+		return this._totalCount;
+	}
+
+	get limit() {
+		return this._limit;
+	}
 
 }
