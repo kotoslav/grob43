@@ -52,3 +52,8 @@ export const uploadImage = async (file) => {
     const {data} = await $host.post('api/gallery/', formData);
     return data;
 }
+
+export const deleteImage = async (path) => {
+    const {data} = await $host.delete('api/gallery', { data : {"path": path} }).catch(e => console.log(e))
+    return true;
+}

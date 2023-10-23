@@ -51,8 +51,11 @@ const ItemList = observer(( {modal}) => {
 
         <Modal.Footer>
           <Button onClick={() => {
+            if (item.items.length == 1 && item.page != 1) {
+              item.setPage(item.page - 1);
+            }
             deleteItem(confirmItem.id);
-            setConfirmMoadlVisible(false)
+            setConfirmMoadlVisible(false);
           }} variant="primary">Подтвердить</Button>
           <Button onClick={() => setConfirmMoadlVisible(false)} variant="secondary">Закрыть</Button>
         </Modal.Footer>

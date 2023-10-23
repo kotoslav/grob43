@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../index';
 import { readAllCategory, itemReadAllByCategory } from '../http/itemAPI';
 import ItemsList from '../components/ItemList';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import ItemBrowse from '../components/modals/ItemBrowse';
 import ReactPaginate from 'react-paginate';
@@ -14,6 +14,7 @@ const Catalog = observer(() => {
 
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
+    const history = useHistory();
     const [modalShow, setModalShow] = useState(false);
     const [modalItem, setModalItem] = useState({
         id: 0,
@@ -22,6 +23,34 @@ const Catalog = observer(() => {
         description: "",
         price: 0
     });
+
+
+    useEffect(() => {
+        let page = Number(searchParams.get("page"));
+        page = page ? page : 1;
+        const itemId = Number(searchParams.get("item"));
+        item.setPage(  page  );
+          readAllCategory().then(
+            data => {
+                item.setCategories(data);
+                item.setSelectedCategory({ ...data.find((cat) => cat.id == searchParams.get("categoryId")) });
+
+                itemReadAllByCategory(item.selectedCategory.id, page).then(
+            data => {
+                item.setItems(data);
+                if (itemId) {
+                    let itemById = item.items.find(el => el.id === itemId)
+                    if (itemById) {
+                        setModalItem(itemById );
+                        setModalShow(true);
+                    }
+                }
+            }
+        );
+
+            });
+
+    }, [])
 
 
     useEffect(() => {
@@ -43,6 +72,8 @@ const Catalog = observer(() => {
             }
         )
     }, [item.selectedCategory, item.page])
+
+
 
     return (
         <div
@@ -67,7 +98,7 @@ const Catalog = observer(() => {
                     </div>
 
                     {
-                        Math.ceil(item.totalCount / item.limit) > 1 && (
+                       Math.ceil(item.totalCount / item.limit) > 1  && (
                             <div className="catalog__pagination">
                                 <div className="pagination">
 
@@ -77,8 +108,13 @@ const Catalog = observer(() => {
                                             <svg className="pagination__svg" width="14" height="26" viewBox="0 0 14 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path className="pagination__svg" d="M0.999996 25L13 13L1 1" stroke="#231C1B" stroke-linecap="round" stroke-linejoin="round" /></svg>
                                         }
-                                        onPageChange={(e) => { item.setPage(e.selected + 1) }}
+                                        onPageChange={(e) => {
+                                            item.setPage(e.selected + 1);
+                                            searchParams.set('page', e.selected + 1);
+                                            history.replace('/catalog?' + searchParams);
+                                        }}
                                         pageRangeDisplayed={3}
+                                        forcePage={item.page - 1 }
                                         pageCount={Math.ceil(item.totalCount / item.limit)}
                                         previousLabel={
                                             <svg className="pagination__svg" width="14" height="26" viewBox="0 0 14 26" fill="none" xmlns="http://www.w3.org/2000/svg">

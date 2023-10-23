@@ -18,8 +18,8 @@ const CategoryCards = observer(() => {
             <nav className="catalog__nav">
                 <ul className="catalog__list">
                     {item.categories.map((cat) => {
-                        searchParams.set("categoryId", cat.id);
-                        let catRoute = CATALOG_ROUTE + "?" + searchParams;
+                        //searchParams.set("categoryId", cat.id);
+                        let catRoute = CATALOG_ROUTE + "?" + "categoryId=" + cat.id;
                         return (<li className="catalog__item-menu" key={cat.id}>
                             <a
                                 className={`catalog__link ${cat.id === item.selectedCategory.id ? 'catalog__link-active' : ""}`}
@@ -27,7 +27,7 @@ const CategoryCards = observer(() => {
                                 onClick={e => {
                                     e.preventDefault();
                                     item.setSelectedCategory(cat);
-                                    history.push(catRoute)
+                                    history.replace(catRoute)
 
                                 }}
                             >

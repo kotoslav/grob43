@@ -27,7 +27,7 @@ const CatalogCardsOnMainPage = observer( () => {
                     handlerScrollUp();
                 }}>
                     <div className="menu-icon__block">
-                        <img className="menu-icon__img" src={process.env.REACT_APP_API_URL + card.imgPath} alt="Иконка гроб" />
+                        <img className="menu-icon__img" src={process.env.REACT_APP_API_URL + card.imgPath} alt={"Иконка " + card.title } />
                     </div>
                     <div className="menu-icon__subtittle"><h4>{card.title}</h4></div>
                 </a>

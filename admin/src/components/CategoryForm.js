@@ -1,7 +1,7 @@
 import React, { createRef } from "react";
 import { Form, Row, Col, CloseButton, Card } from "react-bootstrap";
 import { $host } from "../http";
-import { uploadImage } from "../http/itemAPI";
+import { uploadImage, deleteImage } from "../http/itemAPI";
 
 class CategoryForm extends React.Component {
     constructor(props) {
@@ -53,8 +53,9 @@ class CategoryForm extends React.Component {
         this.passForm();
     }
 
-    galleryDelete(imgPath) {
+    async galleryDelete(imgPath) {
         let gallery = [...this.state.gallery].filter((img) => img !== imgPath);
+        deleteImage(imgPath);
         this.setState({ gallery: gallery });
         this.state.gallery = gallery;
         this.passForm();

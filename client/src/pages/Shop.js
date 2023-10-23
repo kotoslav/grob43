@@ -4,10 +4,12 @@ import { readAllCategory } from '../http/itemAPI';
 import { Context } from '../index';
 import { observer } from 'mobx-react-lite';
 import NavBar from '../components/NavBar';
+import { useHistory } from 'react-router-dom';
 
 
 const Shop = observer(() => {
 	const { item } = useContext(Context);
+	const history = useHistory();
 
 	useEffect(() => {
 		readAllCategory().then(
@@ -39,7 +41,12 @@ const Shop = observer(() => {
 									<h3 className="home-content__subtitle-title">В кировской области</h3>
 								</div>
 								<div className="home-content__button">
-									<a className="button" href="/contacts.html"><h5 className="button-text">Схема проезда</h5><svg className="button-right" width="12" height="22" viewBox="0 0 12 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<a className="button" href="/contacts"
+										onClick = {e => {
+											e.preventDefault();
+											history.push("/contacts");
+										}}
+									><h5 className="button-text">Схема проезда</h5><svg className="button-right" width="12" height="22" viewBox="0 0 12 22" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path className="button-right" d="M1 21L11 11L1 1" stroke="#FAF8F1" strokeLinecap="round" strokeLinejoin="round" />
 									</svg></a>
 								</div>

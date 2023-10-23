@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Context } from '../index';
 import { observer } from 'mobx-react-lite';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { CATALOG_ROUTE } from '../utils/consts';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -14,6 +14,8 @@ const ItemsList = observer(({ setModalItem, setModalShow }) => {
     const { item } = useContext(Context);
     const history = useHistory();
     const {lockScroll} = useScrollLock();
+    const { search } = useLocation();
+    const searchParams = new URLSearchParams(search);
 
     return (
         <div className="catalog__items">
@@ -25,6 +27,8 @@ const ItemsList = observer(({ setModalItem, setModalShow }) => {
                     onClick={() => {
                         setModalItem(itemCard);
                         setModalShow(true);
+                        searchParams.set('item', itemCard.id);
+                        history.replace('/catalog' + '?' + searchParams);
                         lockScroll();
                     }}
                 >

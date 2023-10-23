@@ -33,7 +33,12 @@ const Contacts = () => {
 
 						<YMaps query={{ apikey: "2b64e4d1-4444-4b48-ac6f-88aeaf08d5b6"}}>
 							<Map defaultState={{ center: [58.582707, 49.595142], zoom: 16 }} width='100%' height='600px' className="iframe">
-								<Placemark defaultGeometry={[58.582707, 49.595142]} />
+								<Placemark geometry={[58.582707, 49.595142]}  options={ {
+									iconLayout: 'default#image',
+									iconImageHref: 'img/contacts/map.svg',
+									iconImageSize: [40, 40],
+									iconImageOffset: [-5, -38]
+        }} />
 							</Map>
 						</YMaps>
 					</div>

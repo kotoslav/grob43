@@ -7,6 +7,7 @@ import 'swiper/swiper.css';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import { useScrollLock } from '../useScrollLock';
+import { useLocation, useHistory } from 'react-router-dom';
 
 SwiperCore.use([Controller]);
 
@@ -18,6 +19,10 @@ const ItemBrowse = ({ modalItem, modalShow, setModalShow }) => {
     const [lightBoxOpen, setLightBoxOpen] = useState(false);
     const [lightBoxSrc, setLightBoxSrc] = useState(null);
     const {lockScroll, unlockScroll} = useScrollLock();
+
+    const { search } = useLocation();
+    const searchParams = new URLSearchParams(search);
+    const history = useHistory();
 
 
     useEffect(() => {
@@ -37,18 +42,29 @@ const ItemBrowse = ({ modalItem, modalShow, setModalShow }) => {
                 {
                         if (!lightBoxOpen){
                             setModalShow(false);
-                            unlockScroll()}
+                            unlockScroll();
+                            searchParams.delete('item');
+                            history.replace('/catalog?' + searchParams );
+
+                        }
                         }
             }
             id="modal-product"
         >
             <div className="modal-card__box" onClick={(e) => e.stopPropagation()}>
                 <button className="modal-card__close-btn" id="close-modal-product-btn" onClick={
-                    () => {setModalShow(false); unlockScroll()}
+                    () =>
+                    {
+                        setModalShow(false);
+                        unlockScroll();
+                        searchParams.delete('item');
+                        history.replace('/catalog?' + searchParams );
+
+                    }
                 }>
                     <svg className="modal-card__svg" width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path className="modal-card__svg" d="M29.5 2L2 29.5" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                        <path className="modal-card__svg" d="M2 2L29.5 29.5" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                        <path className="modal-card__svg" d="M29.5 2L2 29.5" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                        <path className="modal-card__svg" d="M2 2L29.5 29.5" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </button>
                 <div className="modal-card__content">
@@ -99,14 +115,14 @@ const ItemBrowse = ({ modalItem, modalShow, setModalShow }) => {
                                         onClick={() => swiperRefControl.current.slideNext()}
 
                                     ><svg className="top-img__btn" width="23" height="42" viewBox="0 0 23 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path className="top-img__btn" d="M1.99999 40L21 21L2 2" stroke="#231C1B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path className="top-img__btn" d="M1.99999 40L21 21L2 2" stroke="#231C1B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                                         </svg>
                                     </button>
 
                                     <button className="top-img__btn-left"
                                         onClick={() => swiperRefControl.current.slidePrev()}
                                     ><svg className="top-img__btn" width="23" height="42" viewBox="0 0 23 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path className="top-img__btn" d="M21 2L2 21L21 40" stroke="#231C1B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path className="top-img__btn" d="M21 2L2 21L21 40" stroke="#231C1B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                                         </svg>
                                     </button>
                                         </>
