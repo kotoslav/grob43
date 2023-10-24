@@ -91,6 +91,7 @@ const ItemBrowse = ({ modalItem, modalShow, setModalShow }) => {
                                                     <SwiperSlide key={img} >
                                                         <div className={'top-img__image'}>
                                                             <img src={process.env.REACT_APP_API_URL + img}
+                                                                style={{cursor: 'pointer'}}
                                                                 className={'top-img__img'}
                                                                 onClick={() => {
                                                                     setLightBoxSrc(process.env.REACT_APP_API_URL + img);
