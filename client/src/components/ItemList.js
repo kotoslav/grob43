@@ -38,10 +38,11 @@ const ItemsList = observer(({ setModalItem, setModalShow }) => {
 
 
                         </div>
-                        <div className="item-catalog__body">
+			<div className="item-catalog__body">
                             <div className="item-catalog__content">
                                 <h6 className="item-catalog__title">{itemCard.name}</h6>
                             </div>
+                            <h5 class="title-card__article">Артикул: {itemCard.article}</h5>
                             <div className="item-catalog__prices">
                                 <div className="item-catalog__price">{itemCard.price}</div>
                                 <div className="item-catalog__currency">руб.</div>

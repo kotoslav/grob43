@@ -20,7 +20,7 @@ class GalleryController {
         let fileName;
         try {
             fileName = req.body.path.split("/").pop();
-            fs.unlinkSync(path.resolve(__dirname, '..', 'upload', fileName));
+            //fs.unlinkSync(path.resolve(__dirname, '..', 'upload', fileName));
         } catch (e) {
             console.log(e);
             return res.json({error: "Нет такого файла"});

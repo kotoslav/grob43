@@ -22,6 +22,7 @@ const CatalogCardsOnMainPage = observer( () => {
             <div className="menu-icon__column" key={card.id}>
                 <a className="menu-icon__link" href={cardRoute} onClick={e => {
                     e.preventDefault();
+                    item.setPage(1);
                     item.setSelectedCategory(card);
                     history.push(cardRoute);
                     handlerScrollUp();
