@@ -26,6 +26,7 @@ const CategoryCards = observer(() => {
                                 href={catRoute}
                                 onClick={e => {
                                     e.preventDefault();
+                                    item.setPage(1);
                                     item.setSelectedCategory(cat);
                                     history.replace(catRoute)
 
