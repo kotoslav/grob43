@@ -24,7 +24,7 @@ const Contacts = () => {
 									<h2 className="title">Схема проезда</h2>
 								</div>
 								<div className="contacts__address">
-									<p className="contacts__text">Адрес магазина: Кировская&nbsp;область, Солнечный&nbsp;проезд&nbsp;1&nbsp;корпус&nbsp;1.</p>
+									<p className="contacts__text">Адрес магазина: Кировская&nbsp;область, город Киров, Солнечный&nbsp;проезд&nbsp;1&nbsp;корпус&nbsp;1.</p>
 								</div>
 							</div>
 						</div>

@@ -20,7 +20,7 @@ const NavBar = () => {
             <div className="nav__conacts">
                 <div className="img-phone"><img className="img-phone__icon"src="./img/header/phone.svg" alt="Телефон"/></div>
                 <div className="phone">
-                    <a className="phone__number" href="tel:89128252323">+7 (912) 825-23-23</a>
+                    <a className="phone__number" href="tel:89128252333">+7 (912) 825-23-33</a>
                     <a className="phone__number" href="tel:89127032010">+7 (912) 703-20-10</a>
                 </div>
             </div>
@@ -34,7 +34,7 @@ const NavBar = () => {
                   history.push(SHOP_ROUTE)
                 }}
 
-                >Главня</a></li>
+                >Главная</a></li>
                 <li className="nav__item">
                 <a
                 className="nav__link"
